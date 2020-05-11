@@ -2,6 +2,7 @@
 
 //Ce fichier récupère la liste des données
 
+if($_SERVER['REQUEST_METHOD'] == 'GET'){
 //On se connecte à la BDD
 try{
     $db = new PDO('mysql:host=localhost;dbname=ajax','root','');
@@ -24,5 +25,13 @@ $listeJson = json_encode($liste);
 
 //On envoie les données
 echo $listeJson;
+
+}else{
+    //Je ne suis pas en méthode get -> erreur HTTP 405 Method not allowed
+    http_response_code(405);
+    echo json_encode(['message' => 'La méthode n\'est pas autorisée']);
+}
+
+
 
 

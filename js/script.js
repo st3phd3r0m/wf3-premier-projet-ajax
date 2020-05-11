@@ -85,15 +85,16 @@ function getListe() {
                 let adresses = JSON.parse(xmlhttp.response);
 
                 for (let adresse of adresses) {
-                    div.innerHTML += `<p>${adresse.prenom} ${adresse.nom} <a href="#">Voir le detail</a></p>`;
-
-                    //On selectionne la balise button
-                    let lien = document.querySelector(`a[href="#"]`);
-
-                    //On met un écouteur d'évenements 'click sur le bouton
-                    lien.addEventListener('click', getDetail);
+                    div.innerHTML += `<p>${adresse.prenom} ${adresse.nom} <a href="#" data-id="${adresse.id}">Voir le detail</a></p>`;
                 }
 
+                //On selectionne la balise button
+                let liens = document.querySelectorAll("a");
+
+                //On boucle sur les balises a et on leur affecte un écouteur d'evenement 'click'
+                for (let lien of liens) {
+                    lien.addEventListener('click', getDetail);
+                }
             }
         }
     }
@@ -102,10 +103,15 @@ function getListe() {
     xmlhttp.open("GET", "liste.php");
     //On envoie la requete
     xmlhttp.send();
-
 }
 
+/**
+ * Cette fonction interroge la page detail.php en demandant un id.
+ * Ensuite, les infos sont affichées dans la div.
+ */
 function getDetail() {
+    // let id = this.getAttribute('data-id');
+    let id = this.dataset.id;
 
     //On va faire une requete AJAX
     //On instancie XMLHttpRequest
@@ -122,28 +128,22 @@ function getDetail() {
                 //Ici on a une reponse
                 // console.log(xmlhttp.response);
                 let div = document.querySelector('div:nth-of-type(3)');
-                div.innerHTML = '';
 
-                let adresses = JSON.parse(xmlhttp.response);
-                console.log(adresses);
+                let adresse = JSON.parse(xmlhttp.response);
 
-                for (let adresse of adresses) {
-
-                    div.innerHTML += `<p>${adresse.prenom}</p>`;
-                    div.innerHTML += `<p>${adresse.nom}</p>`;
-                    div.innerHTML += `<p>${adresse.adresse}</p>`;
-                    div.innerHTML += `<p>${adresse.cp}</p>`;
-                    div.innerHTML += `<p>${adresse.ville}</p>`;
-                    div.innerHTML += `<p>${adresse.telephone}</p>`;
-
-                }
-
+                div.innerHTML += `<p> Nom : ${adresse.nom}</p>`+
+                                `<p> Prénom : ${adresse.prenom}</p>`+
+                                `<p> Adresse : ${adresse.adresse}</p>`+
+                                `<p> Code Postal : ${adresse.cp}</p>`+
+                                `<p> Ville : ${adresse.ville}</p>`+
+                                `<p> Téléphone : ${adresse.telephone}</p>`;
+                
             }
         }
     }
 
     //On ouvre la requête
-    xmlhttp.open("GET", "detail.php");
+    xmlhttp.open("GET", "detail.php?id="+id);
     //On envoie la requete
     xmlhttp.send();
 }
