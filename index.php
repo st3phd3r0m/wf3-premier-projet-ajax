@@ -57,8 +57,6 @@
 
     </form>
 
-    <div></div>
-
 
     <!-- Fichiers JS -->
     <script src="js/script.js"></script>

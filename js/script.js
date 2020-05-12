@@ -135,13 +135,12 @@ function getDetail() {
 
                 let adresse = JSON.parse(xmlhttp.response);
 
-                div.innerHTML += `<p> Nom : ${adresse.nom}</p>` +
+                div.innerHTML = `<p> Nom : ${adresse.nom}</p>` +
                     `<p> Prénom : ${adresse.prenom}</p>` +
                     `<p> Adresse : ${adresse.adresse}</p>` +
                     `<p> Code Postal : ${adresse.cp}</p>` +
                     `<p> Ville : ${adresse.ville}</p>` +
                     `<p> Téléphone : ${adresse.telephone}</p>`;
-
             }
         }
     }
