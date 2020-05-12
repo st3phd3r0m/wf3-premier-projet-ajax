@@ -1,1 +1,10 @@
-GET  http://localhost/premier-projet-ajax/liste.php
+POST http://localhost/premier-projet-ajax/ajout.php
+
+{
+    "nom": "Le nom",
+    "prenom": "Le prénom",
+    "adresse": "L'adresse",
+    "ville": "La ville",
+    "cp": "12345",
+    "telephone": "Le telephone"
+}

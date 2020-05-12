@@ -10,10 +10,14 @@ window.onload = () => {
 
 
     //On selectionne la balise button
-    let bouton2 = document.querySelector('button:nth-of-type(2)');
-
+    let boutonAdresses = document.querySelector('button:nth-of-type(2)');
     //On met un écouteur d'évenements 'click sur le bouton
-    bouton2.addEventListener('click', getListe);
+    boutonAdresses.addEventListener('click', getListe);
+
+    //On selectionne la balise button
+    let boutonSubmit = document.querySelector('form');
+    //On met un écouteur d'évenements 'click sur le bouton
+    boutonSubmit.addEventListener('submit', pickAdress);
 
 }
 
@@ -48,15 +52,15 @@ function getText() {
         }
     }
 
-    console.log('avant open');
+    // console.log('avant open');
     //On ouvre la requête
     xmlhttp.open("GET", "texte.php");
 
-    console.log('entre open et send')
+    // console.log('entre open et send')
     //On envoie la requete
     xmlhttp.send();
 
-    console.log('après send')
+    // console.log('après send')
 }
 
 
@@ -131,19 +135,43 @@ function getDetail() {
 
                 let adresse = JSON.parse(xmlhttp.response);
 
-                div.innerHTML += `<p> Nom : ${adresse.nom}</p>`+
-                                `<p> Prénom : ${adresse.prenom}</p>`+
-                                `<p> Adresse : ${adresse.adresse}</p>`+
-                                `<p> Code Postal : ${adresse.cp}</p>`+
-                                `<p> Ville : ${adresse.ville}</p>`+
-                                `<p> Téléphone : ${adresse.telephone}</p>`;
-                
+                div.innerHTML += `<p> Nom : ${adresse.nom}</p>` +
+                    `<p> Prénom : ${adresse.prenom}</p>` +
+                    `<p> Adresse : ${adresse.adresse}</p>` +
+                    `<p> Code Postal : ${adresse.cp}</p>` +
+                    `<p> Ville : ${adresse.ville}</p>` +
+                    `<p> Téléphone : ${adresse.telephone}</p>`;
+
             }
         }
     }
 
     //On ouvre la requête
-    xmlhttp.open("GET", "detail.php?id="+id);
+    xmlhttp.open("GET", "detail.php?id=" + id);
     //On envoie la requete
     xmlhttp.send();
+}
+
+/**
+ * Cette fonction qui récupère les infos du formulaire et les traite
+ */
+function pickAdress(event) {
+    event.preventDefault();
+
+    let donnees = new FormData(this);
+
+    let entrees = donnees.entries();
+
+    let objet = Object.fromEntries(entrees);
+
+    let donneesJson = JSON.stringify(objet);
+    
+    //On va faire une requete AJAX
+    //On instancie XMLHttpRequest
+    let xmlhttp = new XMLHttpRequest();
+
+    //On ouvre la requête
+    xmlhttp.open("POST", "ajout.php");
+    //On envoie la requete
+    xmlhttp.send(donneesJson);
 }
