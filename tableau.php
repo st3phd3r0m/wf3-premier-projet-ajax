@@ -61,11 +61,12 @@ $db = null;
                         <td data-field="cp"> <?php echo $adresse['cp']; ?></td>
                         <td data-field="ville"> <?php echo $adresse['ville']; ?></td>
                         <td data-field="telephone"> <?php echo $adresse['telephone']; ?></td>
-                        <td data-delete="true"><a href="#" type="button" class="btn btn-danger">Supprimer</a></td>
+                        <td><a href="#" type="button" class="btn btn-danger">Supprimer</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <a href="index.php" type="button" class="btn btn-success">Ajouter</a>
     </div>
 
 

@@ -2,10 +2,17 @@
 window.onload = () => {
     //ou window.onload = function(){}
 
-    let balisesTD = document.querySelectorAll('td');
-    for (baliseTD of balisesTD) {
-        baliseTD.addEventListener('click', rendreEditable);
+    let balisesField = document.querySelectorAll('[data-field]');
+    for (baliseField of balisesField) {
+        baliseField.addEventListener('click', rendreEditable);
     }
+
+    let balisesTD = document.querySelectorAll('td a');
+    for (baliseTD of balisesTD) {
+        baliseTD.addEventListener('click', deleteAdresse);
+    }
+
+
 
 }
 
@@ -13,21 +20,21 @@ window.onload = () => {
 /**
  * Cette fonction envoie une requete delete au serveur
  */
-function deleteAdresse(numAdresse) {
-
-    if(confirm("Voulez-vous supprimer cette adresse ?")){
+function deleteAdresse() {
+    let id = this.parentElement.parentElement.dataset.id;
+    if (confirm(`Voulez-vous supprimer l'adresse ${id} ?`)) {
         // requete AJAX
         // On instancie XMLHttpRequest
         let xmlhttp = new XMLHttpRequest();
 
         //On va écouter l'évenement "readystatechange"
-        xmlhttp.onreadystatechange = function () {
+        xmlhttp.onreadystatechange = () => {
             // On attend la fin de la requete et la reception d'une reponse
             if (xmlhttp.readyState == 4) {
                 //Ici la requete est terminée et on a une reponse
                 if (xmlhttp.status == 200) {
                     //Ici on a une reponse
-                    document.querySelector('tr[data-id="'+numAdresse+'"]').remove();
+                    this.parentElement.parentElement.remove();
 
                     alert("Suppression effectuée");
                 }
@@ -35,10 +42,10 @@ function deleteAdresse(numAdresse) {
         }
 
         //On ouvre la requête
-        xmlhttp.open("DELETE", "delete.php?id=" + numAdresse);
+        xmlhttp.open("DELETE", "delete.php?id=" + id);
         //On envoie la requete
         xmlhttp.send();
-    }else{
+    } else {
         return false;
     }
 }
@@ -49,21 +56,12 @@ function deleteAdresse(numAdresse) {
  */
 function rendreEditable() {
 
-    if (
-        this.dataset.delete == "true"
-    ) {
-        let id = this.parentElement.dataset.id;
-        deleteAdresse(id);
+    //On ajoute l'attribut contenteditable sur l'élément appelant
+    this.setAttribute("contenteditable", "true");
+    //On met le curseur sur l'élément
+    this.focus();
+    this.addEventListener('blur', miseAJour);
 
-    } else if (
-        this.dataset.delete == undefined
-    ) {
-        //On ajoute l'attribut contenteditable sur l'élément appelant
-        this.setAttribute("contenteditable", "true");
-        //On met le curseur sur l'élément
-        this.focus();
-        this.addEventListener('blur', miseAJour);
-    }
 }
 
 /**
