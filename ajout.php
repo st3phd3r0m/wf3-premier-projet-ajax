@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $donneesJson = file_get_contents('php://input');
     $donnees = json_decode($donneesJson);
-    var_dump($donnees);
+    // var_dump($donnees);
 
     //Afficher le nom de la personne
     // echo $donnees->nom;

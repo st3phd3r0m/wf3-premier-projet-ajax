@@ -29,7 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         //On envoie les données
         echo json_encode($adresse);
+
+    } else {
+        //Bad request
+        http_response_code(400);
+        echo json_encode(['message' => 'No ID send']);
     }
+    
 } else {
     //Je ne suis pas en méthode get -> erreur HTTP 405 Method not allowed
     http_response_code(405);

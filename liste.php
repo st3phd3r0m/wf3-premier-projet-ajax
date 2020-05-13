@@ -15,10 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     //On exécute la requete SQL
-    $requete = $db->query('SELECT id, nom, prenom FROM `adresses`');
+    $requete = $db->query('SELECT * FROM `adresses`');
 
     //On récupère les données
     $liste = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+    //On libère la connexion à la BDD
+    $db = null;
 
     //Convertir les données en JSON
     $listeJson = json_encode($liste);

@@ -1,6 +1,7 @@
 <?php
 
-function isFormComplete($dataObj){
+function isFormComplete($dataObj)
+{
 
     $fields = ['nom', 'prenom', 'adresse', 'ville', 'cp', 'telephone'];
     foreach ($fields as $field) {
@@ -12,4 +13,19 @@ function isFormComplete($dataObj){
         }
     }
     return true;
+}
+
+function connexionBDD()
+{
+    //On se connecte à la BDD
+    try {
+        $db = new PDO('mysql:host=localhost;dbname=ajax', 'root', '');
+
+        //On s'assure que les échanges avec MySQL sont encodés en UTF-8
+        $db->exec('SET NAMES "utf8"');
+        return $db;
+    } catch (PDOException $e) {
+        echo 'Erreur : ' . $e->getMessage();
+        return false;
+    }
 }

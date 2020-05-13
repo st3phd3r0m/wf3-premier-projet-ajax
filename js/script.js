@@ -8,7 +8,6 @@ window.onload = () => {
     //On met un écouteur d'évenements 'click sur le bouton
     bouton.addEventListener('click', getText);
 
-
     //On selectionne la balise button
     let boutonAdresses = document.querySelector('button:nth-of-type(2)');
     //On met un écouteur d'évenements 'click sur le bouton
@@ -18,7 +17,6 @@ window.onload = () => {
     let boutonSubmit = document.querySelector('form');
     //On met un écouteur d'évenements 'click sur le bouton
     boutonSubmit.addEventListener('submit', pickAdress);
-
 }
 
 /**
@@ -62,7 +60,6 @@ function getText() {
 
     // console.log('après send')
 }
-
 
 /**
  * Cette fonction va chercher la liste dans liste.php et l'inclut dans la div
@@ -168,6 +165,25 @@ function pickAdress(event) {
     //On va faire une requete AJAX
     //On instancie XMLHttpRequest
     let xmlhttp = new XMLHttpRequest();
+
+    //On traite la requete
+        xmlhttp.onreadystatechange = () => {
+            // On attend la fin de la requete et la reception d'une reponse
+            if (xmlhttp.readyState == 4) {
+                //Ici la requete est terminée et on a une reponse
+    
+                if (xmlhttp.status == 201) { //Le status est-il 201?
+                    //Ici on a une reponse, l'ajout est un succès
+
+                    //On affiche la liste des adresses
+                    getListe();
+
+                    //On vide le formulaire
+                    event.target.reset();
+
+                }
+            }
+        }
 
     //On ouvre la requête
     xmlhttp.open("POST", "ajout.php");
