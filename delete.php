@@ -11,31 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 
         //On récupère et on nettoie les donnéees
         $id = strip_tags($_GET['id']);
-        echo $id;
 
-        //On vérifie que l'id se trouve bien dans la bdd
+        //Avec DELETE, il n'est pas néssécaire de vérifier que l'id se trouve dans la bdd
         $db = connexionBDD();
-        //On exécute la requete SQL
-        $sql = 'SELECT id FROM `adresses` WHERE id = :id;';
-        $requete = $db->prepare($sql);
-        $requete->bindvalue(':id', $id, PDO::PARAM_INT);
-        $requete->execute();
-        $result = $requete->fetch();
-
-        if (!$result) {
-            http_response_code(404);
-            echo json_encode(['message' => 'Adresse inexistante']);
-            die();
-        }
-
-        echo "Adresse éxistante";
 
         //On exécute la requete SQL (on est déjà connecté sur la BDD)
         $sql = 'DELETE FROM `adresses` WHERE id = :id;';
         $requete = $db->prepare($sql);
-        $requete->bindvalue(':id', $id, PDO::PARAM_INT);
+        $requete->bindValue(':id', $id, PDO::PARAM_INT);
+        $result = $requete->rowCount();
 
-        if ($requete->execute()) {
+        if ($result) {
             http_response_code(200);
             echo json_encode(['message' => 'Requête de suppression traitée avec succès.']);
         } else {
@@ -48,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     } else {
         //Bad request
         http_response_code(400);
-        echo json_encode(['message' => 'No ID send']);
+        echo json_encode(['message' => 'No ID received']);
     }
 } else {
     //Je ne suis pas en méthode get -> erreur HTTP 405 Method not allowed

@@ -11,9 +11,6 @@ window.onload = () => {
     for (baliseTD of balisesTD) {
         baliseTD.addEventListener('click', deleteAdresse);
     }
-
-
-
 }
 
 
